@@ -64,6 +64,7 @@
 		<Nullable>annotations</Nullable>
 		<EnablePreviewFeatures>true</EnablePreviewFeatures>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<RootNamespace>$(MSBuildProjectName.Replace(" ", "."))</RootNamespace>
 		<NoWarn>MSB3052;CS8618;CS8603</NoWarn>
@@ -133,6 +134,14 @@
 	</Target>
 
 	<ItemGroup>
+		<ConfigurationsList Condition="'@(ConfigurationsList)' == ''" Include="$(Configurations.Split(';'))" />
+	</ItemGroup>
+
+	<Target Name="BatchBuild">
+		<MSBuild Projects="$(SolutionPath)" Properties="Configuration=%(ConfigurationsList.Identity)" Targets="Build" />
+	</Target>
+
+	<ItemGroup>
 		<Using Include="System" />
 		<Using Include="System.Reflection" />
 		<Using Include="System.Collections" />
@@ -144,7 +153,7 @@
 		<Using Include="Verse.AI" />
 		<Using Static="true"
 			   Include="Verse.TranslatorFormattedStringExtensions"/>
-		<Using Alias="Random" Include="Verse.Rand" />
+		<Using Alias="RimRandom" Include="Verse.Rand" />
 	</ItemGroup>
 
 </Project>
